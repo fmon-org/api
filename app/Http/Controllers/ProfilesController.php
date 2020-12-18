@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 
 class ProfilesController extends Controller {
+	protected string $avatar_path = 'images/avatar/';
+
 	public function update(Request $request): JsonResponse {
 		$this->validate($request, [
 			'location' => 'string',
@@ -26,22 +28,17 @@ class ProfilesController extends Controller {
 
 	public function updateAvatar(Request $request): JsonResponse {
 		$this->validate($request, [
-			'avatar' => 'file'
+			'avatar' => 'file|required'
 		]);
 
-		if (!$request->hasFile('avatar')) {
-			return response()->json([
-				'avatar' => Lang::get(
-					'validation.required',
-					['attribute' => 'avatar']
-				)
-			], 422);
+		$profile = Auth::user()->profile()->first();
+
+		if($profile->avatar) {
+			unlink(storage_path($profile->getAvatarName($this->avatar_path)));
 		}
 
-		$profile = Auth::user()->profile()->first();
-		$avatar_name = uniqid($profile->user_id) . '.jpg';
-
-		$request->avatar->move('images/avatar', $avatar_name);
+		$avatar_name = Str::uuid()->toString().'.jpg';
+		$request->avatar->move(storage_path($this->avatar_path), $avatar_name);
 		$profile->avatar = $avatar_name;
 		$profile->save();
 

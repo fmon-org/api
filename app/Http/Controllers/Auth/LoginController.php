@@ -7,7 +7,6 @@ use App\Models\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Lang;
 
 class LoginController extends Controller {
 	public function login(Request $request): JsonResponse {
@@ -20,27 +19,30 @@ class LoginController extends Controller {
 
 		if (is_null($user)) {
 			return response()->json([
-				'username' => Lang::get(
+				'username' => trans(
 					'validation.exists',
-					['attribute' => 'username']
+					['attribute' => trans('validation.attributes.username')]
 				)
 			], 401);
 		}
 
-		if (!$user->activated) {
+		if (!$user->isActive()) {
 			return response()->json([
-				'user' => Lang::get(
+				'user' => trans(
 					'validation.activated',
-					['attribute' => 'user']
+					['attribute' => trans('validation.attributes.user')]
 				)
 			], 401);
 		}
 
 		if (!$user->checkPassword($request->password)) {
 			return response()->json([
-				'password' => Lang::get(
+				'password' => trans(
 					'validation.same',
-					['attribute' => 'password', 'other' => 'username']
+					[
+						'attribute' => trans('validation.attributes.password'),
+						'other' => trans('validation.attributes.username')
+					]
 				)
 			], 401);
 		}

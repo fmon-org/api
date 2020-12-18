@@ -8,7 +8,6 @@ use App\Models\PasswordReset;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -22,9 +21,9 @@ class PasswordResets extends Controller {
 
 		if (is_null($user)) {
 			return response()->json([
-				'email ' => Lang::get(
+				'email ' => trans(
 					'validation.exists',
-					['attribute' => 'email']
+					['attribute' => trans('validation.attributes.email')]
 				)
 			], 404);
 		}
@@ -38,7 +37,7 @@ class PasswordResets extends Controller {
 		Mail::to($user->email)->send(new PasswordResetMail($reset_token));
 
 		return response()->json([
-			'password' => Lang::get(
+			'password' => trans(
 				'mail.sent'
 			)
 		]);
@@ -53,9 +52,9 @@ class PasswordResets extends Controller {
 
 		if (is_null($resets)) {
 			return response()->json([
-				'token' => Lang::get(
+				'token' => trans(
 					'validation.exists',
-					['attribute' => 'token']
+					['attribute' => trans('validation.attributes.token')]
 				)
 			], 404);
 		}
@@ -67,9 +66,9 @@ class PasswordResets extends Controller {
 		$resets->delete();
 
 		return response()->json([
-			'user' => Lang::get(
+			'user' => trans(
 				'alert.updated',
-				['attribute' => 'password']
+				['attribute' => trans('validation.attributes.password')]
 			)
 		]);
 	}

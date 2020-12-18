@@ -35,4 +35,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	public function checkPassword(string $password): bool {
 		return Hash::check($password, $this->attributes['password']);
 	}
+
+	public function isActive(): bool {
+		return $this->attributes['activated'];
+	}
 }

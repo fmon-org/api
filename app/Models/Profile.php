@@ -16,6 +16,10 @@ class Profile extends Model {
 			: null;
 	}
 
+	public function getAvatarName($path = null): String {
+		return $path.$this->attributes['avatar'];
+	}
+
 	public function user(): BelongsTo {
 		return $this->belongsTo(User::class);
 	}

@@ -7,7 +7,6 @@ use App\Mail\ActivationMail;
 use App\Models\Activation;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -28,9 +27,9 @@ class ActivationController extends Controller {
 
 		if (is_null($activation)) {
 			return response()->json([
-				'token' => Lang::get(
+				'token' => trans(
 					'validation.exists',
-					['attribute' => 'token']
+					['attribute' => trans('validation.attributes.token')]
 				)
 			], 404);
 		}
@@ -41,9 +40,9 @@ class ActivationController extends Controller {
 		$activation->delete();
 
 		return response()->json([
-			'user' => Lang::get(
+			'user' => trans(
 				'alert.activated',
-				['attribute' => 'user']
+				['attribute' => trans('validation.attributes.user')]
 			)
 		]);
 	}
