@@ -34,7 +34,7 @@ class ProfilesController extends Controller {
 		$profile = Auth::user()->profile()->first();
 
 		if($profile->avatar) {
-			unlink(storage_path($profile->getAvatarName($this->avatar_path)));
+			unlink(storage_path($profile->avatarName($this->avatar_path)));
 		}
 
 		$avatar_name = Str::uuid()->toString().'.jpg';

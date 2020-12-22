@@ -16,7 +16,7 @@ class Profile extends Model {
 			: null;
 	}
 
-	public function getAvatarName($path = null): String {
+	public function avatarName($path = null): String {
 		return $path.$this->attributes['avatar'];
 	}
 
