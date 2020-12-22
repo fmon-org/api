@@ -26,6 +26,7 @@ $router->group([
 	$router->group(
 		['middleware' => 'auth'],
 		function () use ($router) {
+			$router->get('me', 'Auth\MeController@getMyUser');
 			$router->patch('user', 'UsersController@update');
 			$router->patch('profile', 'ProfilesController@update');
 			$router->post('profile/newAvatar', 'ProfilesController@updateAvatar');
