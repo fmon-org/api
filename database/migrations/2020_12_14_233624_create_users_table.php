@@ -5,12 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up() {
+	public function up(): void {
 		Schema::create('users', function (Blueprint $table) {
 			$table->bigIncrements('id');
 			$table->string('username')->unique();
@@ -21,12 +16,10 @@ class CreateUsersTable extends Migration {
 		});
 	}
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down() {
+	public function down(): void {
+		Schema::dropIfExists('password_resets');
+		Schema::dropIfExists('profile');
+		Schema::dropIfExists('user_activation');
 		Schema::dropIfExists('users');
 	}
 }
