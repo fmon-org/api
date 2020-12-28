@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Factory as Faker;
+use Firebase\JWT\JWT;
 
 class UserTest extends TestCase {
 	private \Faker\Generator $faker;
@@ -144,7 +145,10 @@ class UserTest extends TestCase {
 	}
 
 	public function testGetMyUser() {
-		$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.ctjpO5b19NOCyGgSHm-Fo3MLwHJL8VV02bO3vT77gt8";
+		$token = JWT::encode(
+			['id' => 1],
+			env('JWT_KEY')
+		);
 
 		$headers = [
 			"Authorization" => "Bearer ".$token
